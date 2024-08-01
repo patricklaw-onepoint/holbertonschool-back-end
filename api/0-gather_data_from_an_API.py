@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Script that uses https://jsonplaceholder.typicode.com/ for a
 given employee ID, returns information about his/her todo list progress."""
-import requests
 from sys import argv
+import requests
 
 if __name__ == "__main__":
     employeeId = argv[1]
@@ -11,15 +11,13 @@ if __name__ == "__main__":
     userUrl = f"{baseUrl}/users/{employeeId}"
     todoUrl = f"{baseUrl}/users/{employeeId}/todos"
 
-    userResponse = requests.get(userUrl, timeout=10)
-    name = userResponse.json()["name"]
+    name = requests.get(userUrl, timeout=10).json()["name"]
 
-    todoResponse = requests.get(todoUrl, timeout=10)
-    todoData = todoResponse.json()
-    tasks = [task["title"] for task in todoData if task["completed"]]
+    todo = requests.get(todoUrl, timeout=10).json()
+    tasks = [task["title"] for task in todo if task["completed"]]
 
     completed = len(tasks)
-    total = len(todoData)
+    total = len(todo)
 
     print(f"Employee {name} is done with tasks({completed}/{total}):")
     for title in tasks:
